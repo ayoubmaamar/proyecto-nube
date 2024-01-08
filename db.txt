@@ -1,0 +1,58 @@
+// Use your database (it will be created if it doesn't exist)
+use nube_db;
+
+// Create Collections
+db.createCollection("users");
+db.createCollection("games");
+db.createCollection("participations");
+db.createCollection("cacheDiscoveries");
+db.createCollection("imageStorage");
+
+// Example: Inserting a User
+db.users.insertOne({
+  name: "John Doe",
+  email: "john@example.com",
+  oauthToken: "exampleOAuthToken",
+  userType: "Participant"
+});
+
+// Example: Inserting a Game
+db.games.insertOne({
+  organizerId: ObjectId("someUserId"), // Replace with a real ObjectId from users collection
+  gameArea: {
+    centerCoordinates: { latitude: 40.7128, longitude: -74.0060 },
+    dimensions: { width: 10, height: 10 }
+  },
+  status: "Active",
+  caches: [
+    {
+      cacheId: ObjectId(),
+      location: { latitude: 40.7138, longitude: -74.0065 },
+      hint: "Near the big tree",
+      foundByUserId: null
+    }
+    // Add more caches as needed
+  ]
+});
+
+// Example: Inserting a Participation
+db.participations.insertOne({
+  userId: ObjectId("someUserId"), // Replace with a real ObjectId from users collection
+  gameId: ObjectId("someGameId"), // Replace with a real ObjectId from games collection
+  joinedDate: new Date()
+});
+
+// Example: Inserting a Cache Discovery
+db.cacheDiscoveries.insertOne({
+  cacheId: ObjectId("someCacheId"), // Replace with a real ObjectId from games.caches
+  userId: ObjectId("someUserId"), // Replace with a real ObjectId from users collection
+  discoveryDate: new Date(),
+  proofImage: "path/to/image.jpg"
+});
+
+// Example: Inserting an Image Storage Document
+db.imageStorage.insertOne({
+  relatedId: ObjectId("someRelatedId"), // Replace with a real ObjectId from games or games.caches
+  imagePath: "path/to/another/image.jpg",
+  imageType: "Hint"
+});
